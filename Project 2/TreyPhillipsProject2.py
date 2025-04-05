@@ -2,6 +2,9 @@ import time
 import multiprocessing
 import threading
 import asyncio
+import sys
+
+sys.set_int_max_str_digits(1000000)
 
 # prime checker
 def is_prime(n):
@@ -23,7 +26,7 @@ def prime_search(start, step, max_time):
     return highest
 
 def fibonacci(n):
-    if n == 0:
+    while n == 0:
         return 0
     a, b = 0, 1
     for num in range(2, n + 1):
