@@ -1,0 +1,81 @@
+#Lab 9 Part 1 Trey Phillips
+import logging
+import logging.handlers
+
+logger = logging.getLogger("Lab9Logger")
+logger.setLevel(logging.DEBUG)
+log_file_name = "Lab9Logger.log"
+
+formatter = logging.Formatter(
+    fmt = "%(asctime)s | %(name)s | %(levelname)s | %(message)s",
+)
+
+handler = logging.handlers.TimedRotatingFileHandler(
+    filename = log_file_name,
+    when="D",
+    backupCount = 3,
+)
+handler.setFormatter(formatter)
+logger.handlers.clear()
+logger.addHandler(handler)
+
+def create_logs(): #I used the 5 example logs for the names and then asked chatgpt to create the outputs for each
+    logs = {
+        "Lab9Logger.sqldb": [
+            ("info", "Database connection established"),
+            ("warning", "Database query took longer than expected"),
+            ("error", "Database corruption detected"),
+            ("critical", "System failure: Database crashed"),
+        ],
+        "Lab9Logger.ui": [
+            ("info", "UI components loaded successfully"),
+            ("warning", "UI element is missing on the page"),
+            ("error", "Failed to render UI"),
+            ("critical", "UI crash detected"),
+        ],
+        "Lab9Logger.frontend.js": [
+            ("info", "Frontend script loaded"),
+            ("warning", "Frontend script is deprecated"),
+            ("error", "Error in frontend.js script"),
+            ("critical", "Frontend crash: JavaScript engine failure"),
+        ],
+        "Lab9Logger.backend.js": [
+            ("info", "Backend.js API request received"),
+            ("warning", "Backend.js API response delay"),
+            ("error", "Backend.js API endpoint failed"),
+            ("critical", "Backend.js system failure"),
+        ],
+        "Lab9Logger.frontend.flask": [
+            ("info", "Frontend Flask app started"),
+            ("warning", "Frontend Flask app deprecated"),
+            ("error", "Frontend Flask app crash"),
+            ("critical", "Critical error in frontend Flask app"),
+        ],
+        "Lab9Logger.backend.flask": [
+            ("info", "Backend Flask app running"),
+            ("warning", "Backend Flask app API slow"),
+            ("error", "Backend Flask API error"),
+            ("critical", "Backend Flask app failure"),
+        ],
+    }
+    
+    for name in logs:
+        output_logs = logs[name]
+        output_logger = logging.getLogger(name)
+        output_logger.setLevel(logging.DEBUG)
+        output_logger.handlers.clear() 
+        output_logger.addHandler(handler) 
+
+        log_level_map = {
+            "info": output_logger.info,
+            "warning": output_logger.warning,
+            "error": output_logger.error,
+            "critical": output_logger.critical
+        }
+
+        for log_level, message in output_logs:
+            log_level_map[log_level](message)
+
+    print(f"Logs written to {log_file_name}")
+
+create_logs()
