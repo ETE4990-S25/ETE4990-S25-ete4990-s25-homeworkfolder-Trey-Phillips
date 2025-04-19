@@ -1,0 +1,48 @@
+2025-04-19 03:03:27,756 | Lab9Logger.sqldb | INFO | Database connection established
+2025-04-19 03:03:27,756 | Lab9Logger.sqldb | INFO | Database connection established
+2025-04-19 03:03:27,756 | Lab9Logger.sqldb | WARNING | Database query took longer than expected
+2025-04-19 03:03:27,756 | Lab9Logger.sqldb | WARNING | Database query took longer than expected
+2025-04-19 03:03:27,756 | Lab9Logger.sqldb | ERROR | Database corruption detected
+2025-04-19 03:03:27,756 | Lab9Logger.sqldb | ERROR | Database corruption detected
+2025-04-19 03:03:27,757 | Lab9Logger.sqldb | CRITICAL | System failure: Database crashed
+2025-04-19 03:03:27,757 | Lab9Logger.sqldb | CRITICAL | System failure: Database crashed
+2025-04-19 03:03:27,757 | Lab9Logger.ui | INFO | UI components loaded successfully
+2025-04-19 03:03:27,757 | Lab9Logger.ui | INFO | UI components loaded successfully
+2025-04-19 03:03:27,757 | Lab9Logger.ui | WARNING | UI element is missing on the page
+2025-04-19 03:03:27,757 | Lab9Logger.ui | WARNING | UI element is missing on the page
+2025-04-19 03:03:27,757 | Lab9Logger.ui | ERROR | Failed to render UI
+2025-04-19 03:03:27,757 | Lab9Logger.ui | ERROR | Failed to render UI
+2025-04-19 03:03:27,757 | Lab9Logger.ui | CRITICAL | UI crash detected
+2025-04-19 03:03:27,757 | Lab9Logger.ui | CRITICAL | UI crash detected
+2025-04-19 03:03:27,757 | Lab9Logger.frontend.js | INFO | Frontend script loaded
+2025-04-19 03:03:27,757 | Lab9Logger.frontend.js | INFO | Frontend script loaded
+2025-04-19 03:03:27,757 | Lab9Logger.frontend.js | WARNING | Frontend script is deprecated
+2025-04-19 03:03:27,757 | Lab9Logger.frontend.js | WARNING | Frontend script is deprecated
+2025-04-19 03:03:27,757 | Lab9Logger.frontend.js | ERROR | Error in frontend.js script
+2025-04-19 03:03:27,757 | Lab9Logger.frontend.js | ERROR | Error in frontend.js script
+2025-04-19 03:03:27,758 | Lab9Logger.frontend.js | CRITICAL | Frontend crash: JavaScript engine failure
+2025-04-19 03:03:27,758 | Lab9Logger.frontend.js | CRITICAL | Frontend crash: JavaScript engine failure
+2025-04-19 03:03:27,758 | Lab9Logger.backend.js | INFO | Backend.js API request received
+2025-04-19 03:03:27,758 | Lab9Logger.backend.js | INFO | Backend.js API request received
+2025-04-19 03:03:27,758 | Lab9Logger.backend.js | WARNING | Backend.js API response delay
+2025-04-19 03:03:27,758 | Lab9Logger.backend.js | WARNING | Backend.js API response delay
+2025-04-19 03:03:27,758 | Lab9Logger.backend.js | ERROR | Backend.js API endpoint failed
+2025-04-19 03:03:27,758 | Lab9Logger.backend.js | ERROR | Backend.js API endpoint failed
+2025-04-19 03:03:27,758 | Lab9Logger.backend.js | CRITICAL | Backend.js system failure
+2025-04-19 03:03:27,758 | Lab9Logger.backend.js | CRITICAL | Backend.js system failure
+2025-04-19 03:03:27,758 | Lab9Logger.frontend.flask | INFO | Frontend Flask app started
+2025-04-19 03:03:27,758 | Lab9Logger.frontend.flask | INFO | Frontend Flask app started
+2025-04-19 03:03:27,758 | Lab9Logger.frontend.flask | WARNING | Frontend Flask app deprecated
+2025-04-19 03:03:27,758 | Lab9Logger.frontend.flask | WARNING | Frontend Flask app deprecated
+2025-04-19 03:03:27,759 | Lab9Logger.frontend.flask | ERROR | Frontend Flask app crash
+2025-04-19 03:03:27,759 | Lab9Logger.frontend.flask | ERROR | Frontend Flask app crash
+2025-04-19 03:03:27,759 | Lab9Logger.frontend.flask | CRITICAL | Critical error in frontend Flask app
+2025-04-19 03:03:27,759 | Lab9Logger.frontend.flask | CRITICAL | Critical error in frontend Flask app
+2025-04-19 03:03:27,759 | Lab9Logger.backend.flask | INFO | Backend Flask app running
+2025-04-19 03:03:27,759 | Lab9Logger.backend.flask | INFO | Backend Flask app running
+2025-04-19 03:03:27,759 | Lab9Logger.backend.flask | WARNING | Backend Flask app API slow
+2025-04-19 03:03:27,759 | Lab9Logger.backend.flask | WARNING | Backend Flask app API slow
+2025-04-19 03:03:27,759 | Lab9Logger.backend.flask | ERROR | Backend Flask API error
+2025-04-19 03:03:27,759 | Lab9Logger.backend.flask | ERROR | Backend Flask API error
+2025-04-19 03:03:27,759 | Lab9Logger.backend.flask | CRITICAL | Backend Flask app failure
+2025-04-19 03:03:27,759 | Lab9Logger.backend.flask | CRITICAL | Backend Flask app failure

@@ -1,7 +1,10 @@
-#Lab 9 Part 1 Trey Phillips
+#Lab 9 Trey Phillips
 import logging
 import logging.handlers
+import json
+import re
 
+#Part 1 Create Log Files
 logger = logging.getLogger("Lab9Logger")
 logger.setLevel(logging.DEBUG)
 log_file_name = "Lab9Logger.log"
@@ -20,6 +23,7 @@ logger.handlers.clear()
 logger.addHandler(handler)
 
 def create_logs(): #I used the 5 example logs for the names and then asked chatgpt to create the outputs for each
+    open(log_file_name, 'w').close()
     logs = {
         "Lab9Logger.sqldb": [
             ("info", "Database connection established"),
@@ -78,4 +82,63 @@ def create_logs(): #I used the 5 example logs for the names and then asked chatg
 
     print(f"Logs written to {log_file_name}")
 
-create_logs()
+#Part 2 - Reading the log file, Parsing the log lines, and Counting the log levels
+def read_logs(log_file_name):
+    try:
+        with open(log_file_name, 'r') as log_file:
+            lines = log_file.readlines()
+            return lines
+    except FileNotFoundError:
+        print("Logs were not found.")
+        return []
+
+def parse_logs(log_line):
+    pattern = r"^(.*?)\s\|\s(.*?)\s\|\s(.*?)\s\|\s(.*)$"
+    match = re.match(pattern, log_line.strip())
+    if match:
+        return {
+            "timestamp": match.group(1),
+            "logger": match.group(2),
+            "level": match.group(3).lower(),
+            "message": match.group(4)
+        }
+    else:
+        return None
+
+def count_logs(log_lines):
+    counted_levels = {}
+
+    for log_line in log_lines:
+        parsed_line = parse_logs(log_line)
+        if parsed_line:
+            level = parsed_line["level"]
+            message = parsed_line["message"]
+
+            if level not in counted_levels:
+                counted_levels[level] = {}
+
+            if message not in counted_levels[level]:
+                counted_levels[level][message] = 0
+
+            counted_levels[level][message] += 1
+
+    return counted_levels
+
+def save_to_json(counted_levels, log_file_name="log_summary.json"):
+    with open(log_file_name, "w") as file:
+        json.dump(counted_levels, file)
+    print(f"Saved log summary to {log_file_name}")
+
+def main():
+    create_logs()
+    lines = read_logs(log_file_name)
+    if not lines:
+        return
+
+    log_counts = count_logs(lines)
+    save_to_json(log_counts)
+    print(json.dumps(log_counts))
+
+if __name__ == "__main__":
+    main()
+
