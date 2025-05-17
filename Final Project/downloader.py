@@ -4,11 +4,28 @@ import json
 import os
 import threading
 import logging
+import time
 from datetime import datetime
 from initializer import URL, thread_count
 from utils import date_range, directory_check
 
 """Download and parse XML into JSON"""
+
+def fetch_with_retries(url, params, retries=3, delay=2):
+    for i in range(retries):
+        try:
+            response = requests.get(url, params=params, timeout=10)
+            response.raise_for_status()
+
+            content_type = response.headers.get("Content-Type", "")
+            if not content_type.startswith("text/xml"):
+                raise ValueError(f"Unexpected content type: {content_type}")
+
+            return response
+        except Exception as e:
+            logging.warning(f"[RETRY {i+1}] {params['base_currency']} {params['currency_date']}: {e}")
+            time.sleep(delay * (2 ** i))
+    raise Exception(f"Failed after {retries} retries for {params['base_currency']} {params['currency_date']}")
 
 def data_fetch(date_str: str, base_currency: str):
     folder = f"data/{base_currency}"
@@ -27,16 +44,21 @@ def data_fetch(date_str: str, base_currency: str):
         "base_currency_code": base_currency,
         "format_type": "xml"
     }
-
     try:
-        response = requests.get(URL, params = params, timeout=10)
-        response.raise_for_status()
-        data_dict = xmltodict.parse(response.text)
+        response = fetch_with_retries(URL, params)
+
+        try:
+            data_dict = xmltodict.parse(response.text)
+        except Exception as e:
+            logging.warning(f"[ERROR] {base_currency} {date_str}: Failed to parse XML: {e}")
+            return
 
         with open(filename, "w") as f:
-            json.dump(data_dict, f, indent = 4)
+            json.dump(data_dict, f, indent=4)
 
         logging.info(f"[SUCCESS] {base_currency} {date_str}")
+        time.sleep(0.2)
+
     except Exception as e:
         logging.warning(f"[ERROR] {base_currency} {date_str}: {e}")
 
@@ -51,15 +73,14 @@ def data_download(base_currency: str, start_date: datetime, end_date: datetime):
         threads.append(t)
         t.start()
 
-        if len(threads) >= thread_count:
-            for t in threads:
-                t.join()
-            threads = []
+        while threading.active_count() > thread_count:
+            time.sleep(0.1)
 
     for t in threads:
         t.join()
 
-"""Print exchange rate for currencies by date and chosen base currency. Checking to ensure json is being interpreted"""
+"""Print exchange rate for currencies by date and chosen base currency. Checking to ensure json is being interpreted. 
+SHOULD MOVE TO SEPARATE FILE LATER."""
 
 def exchange_rate_print(base_currency):
     base_dir = os.path.join("data", base_currency)
