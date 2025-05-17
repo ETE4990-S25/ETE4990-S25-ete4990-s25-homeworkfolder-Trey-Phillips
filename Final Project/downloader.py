@@ -5,7 +5,10 @@ import os
 import threading
 import logging
 import time
+import re
+import pandas as pd
 from datetime import datetime
+from glob import glob
 from initializer import URL, thread_count
 from utils import date_range, directory_check
 
@@ -109,3 +112,56 @@ def exchange_rate_print(base_currency):
                     print(f"   -> {target}: {value}")
             except Exception as e:
                 print(f"Error. Could not parse {filename}: {e}.")
+
+"""Aggregate all JSON data for EDA"""
+
+def parse_for_EDA(data_dir="data"):
+    all_data = []
+
+    for base_path in glob(os.path.join(data_dir, "*")):
+        base_currency = os.path.basename(base_path)
+        for json_file in glob(os.path.join(base_path, "*.json")):
+            with open(json_file, "r") as f:
+                try:
+                    data = json.load(f)
+                    channel = data.get("channel", {})
+                    items = channel.get("item", [])
+                    if isinstance(items, dict):
+                        items = [items]
+
+                    pub_date_str = channel.get("pubDate")
+                    date_obj = None
+                    if pub_date_str:
+                        try:
+                            date_obj = datetime.strptime(pub_date_str, "%a, %d %b %Y")
+                        except:
+                            pass
+                    if not date_obj:
+                        title = channel.get("title", "")
+                        match = re.search(r"\((\d{1,2} \w{3} \d{4})\)", title)
+                        if match:
+                            try:
+                                date_obj = datetime.strptime(match.group(1), "%d %b %Y")
+                            except:
+                                continue
+
+                    for rate in items:
+                        if not isinstance(rate, dict):
+                            continue
+                        target = rate.get("targetCurrency")
+                        raw_rate = rate.get("exchangeRate", "0").replace(",", "")
+                        try:
+                            exchange_rate = float(raw_rate)
+                        except:
+                            exchange_rate = None
+
+                        all_data.append({
+                            "date": date_obj,
+                            "base_currency": base_currency,
+                            "target_currency": target,
+                            "exchange_rate": exchange_rate
+                        })
+                except Exception as e:
+                    logging.warning(f"Failed to parse {json_file}: {e}")
+
+    return pd.DataFrame(all_data, columns=["date", "base_currency", "target_currency", "exchange_rate"])
